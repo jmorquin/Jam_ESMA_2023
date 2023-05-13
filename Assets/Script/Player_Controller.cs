@@ -16,6 +16,7 @@ public class Player_Controller : MonoBehaviour
     private InputActionAsset inputAsset;
     private InputActionMap player;
     private InputAction move;
+    private Rigidbody rb;
     
 
 
@@ -24,6 +25,7 @@ public class Player_Controller : MonoBehaviour
     {
         inputAsset = this.GetComponent<PlayerInput>().actions;
         player = inputAsset.FindActionMap("Gameplay");
+        rb = GetComponent<Rigidbody>();
     }
     private void OnEnable()
     {
@@ -38,9 +40,12 @@ public class Player_Controller : MonoBehaviour
         player.Disable();
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
+        Debug.Log(movementInput.x);
+        Vector3 deplacement = new Vector3(movementInput.x, 0f, movementInput.y);
+        rb.velocity = deplacement * speed * Time.deltaTime;
         transform.Translate(new Vector3(movementInput.x, 0, movementInput.y) * speed * Time.deltaTime);
     }
 

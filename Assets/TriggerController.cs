@@ -5,17 +5,12 @@ using UnityEngine.InputSystem;
 
 public class TriggerController : MonoBehaviour
 {
-    private static int nextPlayerIndex = 0; // Variable statique pour l'index du joueur
+    private int nextPlayerIndex = 1; // Variable statique pour l'index du joueur
     private InputActionAsset inputAsset;
     private InputActionMap player;
     //[SerializeField] public float SpeedValue;
 
-    public int AssignPlayerIndex()
-    {
-        int playerIndex = nextPlayerIndex; // Attribuer l'index du joueur
-        nextPlayerIndex++; // Incrémenter l'index pour le prochain joueur
-        return playerIndex;
-    }
+    
 
     private void OnTriggerEnter(Collider other)
     {
@@ -27,14 +22,16 @@ public class TriggerController : MonoBehaviour
 
             if (playerIndex == 10)
             {
-                AssignPlayerIndex();
-                GiveMalus(other.gameObject);
+                other.GetComponent<Player_Trigger>().playerIndex = nextPlayerIndex;
+                nextPlayerIndex++;
+                StartCoroutine(GiveMalus(other.gameObject));
             }
         }
     }
-    private void GiveMalus(GameObject player)
+    private IEnumerator GiveMalus(GameObject player)
     {
-        player.GetComponent<Player_Controller>().speed = -player.GetComponent<Player_Controller>().speed;
+        yield return new WaitForSeconds(3f);
+        player.GetComponent<Player_Controller>().speed =- player.GetComponent<Player_Controller>().speed;
         Debug.Log(player);
         
         //float invertedValue = InputSystem.GetAction("Move").ReadValue<float>();

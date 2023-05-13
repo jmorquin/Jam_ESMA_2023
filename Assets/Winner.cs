@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Winner : MonoBehaviour
 {
-    [SerializeField]
-    private List<Transform> podium;
     public PlayerSpawnManager playerSpawnManager;
+
+    [SerializeField]
+    private List<GameObject> podium;
 
 
     // Start is called before the first frame update
@@ -23,8 +24,11 @@ public class Winner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        other.GetComponent<MeshRenderer>().enabled = false;
+        other.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+        podium.Add(other.gameObject);
         //int playerID = playerInput.playerIndex;
         //podium.Add(other.GetComponent<Pl>);
-        Destroy(gameObject);
+        
     }
 }
